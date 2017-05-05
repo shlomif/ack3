@@ -393,7 +393,8 @@ must also happen there.
 =cut
 
 sub print_matches_in_file {
-    my ( $file ) = @_;
+    my $file = shift;
+    my $opt  = shift;
 
     my $max_count = $opt_m || -1;   # Go negative for no limit so it can never reduce to 0.
     my $nmatches  = 0;
@@ -411,6 +412,11 @@ sub print_matches_in_file {
         }
         return 0;
     }
+    if ( !$file->needs_line_scan( $opt ) ) {
+        $file->close;
+        return 0;
+    }
+    $file->reset();
 
     my $display_filename = $filename;
     if ( $opt_show_filename && $opt_heading && $opt_color ) {

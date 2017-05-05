@@ -115,13 +115,16 @@ sub needs_line_scan {
     my $self  = shift;
     my $opt   = shift;
 
+    # Can't tell about negations.
     return 1 if $opt->{v};
 
     my $size = -s $self->{fh};
     if ( $size == 0 ) {
+        # If the file's empty, no need to scan.
         return 0;
     }
     elsif ( $size > 100_000 ) {
+        # If it's too big to slurp up at once then we need to scan.
         return 1;
     }
 
@@ -131,9 +134,15 @@ sub needs_line_scan {
         App::Ack::warn( "$self->{filename}: $!" );
         return 1;
     }
-    return 0 unless $rc && ( $rc == $size );
 
-    return $buffer =~ /$opt->{regex}/m;
+    if ( $rc == $size ) {
+        # If the regex appears at all, we need to scan.
+        return $buffer =~ /$opt->{regex}/m;
+    }
+    else {
+        # If for some reason we couldn't read the entire file, then we need to scan.
+        return 1;
+    }
 }
 
 

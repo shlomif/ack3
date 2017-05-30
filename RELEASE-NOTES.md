@@ -15,6 +15,10 @@ word matching.
 
 * `--proximate=N` option
 
+* Added `--pod` and `--markdown`.
+
+* Removed `--actionscript`.
+
 
 # Incompatibilities with ack 2
 

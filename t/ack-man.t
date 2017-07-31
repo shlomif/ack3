@@ -21,24 +21,39 @@ my @faq_sections = qw(
     FAQ
 );
 
+my @cookbook_sections = (
+    'COOKBOOK',
+    'USING ACK EFFECTIVELY',
+);
+
 subtest 'ack --man' => sub {
-    local $TODO = 'ack-standalone currently dumps all sections';
     plan tests => 5;
 
     my ($stdout, $stderr) = run_ack_with_stderr( '--man' );
     is_empty_array( $stderr, 'Nothing in STDERR' );
     want( $stdout, \@manual_sections );
     dont( $stdout, \@faq_sections );
+    dont( $stdout, \@cookbook_sections );
 };
 
 subtest 'ack --faq' => sub {
-    local $TODO = 'ack-standalone currently dumps all sections';
     plan tests => 5;
 
     my ($stdout, $stderr) = run_ack_with_stderr( '--faq' );
     is_empty_array( $stderr, 'Nothing in STDERR' );
     want( $stdout, \@faq_sections );
     dont( $stdout, \@manual_sections );
+    dont( $stdout, \@cookbook_sections );
+};
+
+subtest 'ack --cookbook' => sub {
+    plan tests => 5;
+
+    my ($stdout, $stderr) = run_ack_with_stderr( '--cookbook' );
+    is_empty_array( $stderr, 'Nothing in STDERR' );
+    dont( $stdout, \@faq_sections );
+    dont( $stdout, \@manual_sections );
+    want( $stdout, \@cookbook_sections );
 };
 
 done_testing();

@@ -434,24 +434,59 @@ END_OF_HELP
 
 
 sub show_docs {
-    my $section = shift;
+    my $manual = shift;
 
     require Pod::Usage;
 
+    my %sections = (
+        Cookbook => [
+            'COOKBOOK',
+            'USING ACK EFFECTIVELY',
+        ],
+        FAQ => [
+            'FAQ',
+        ],
+        Manual => [
+            'NAME',
+            'SYNOPSIS',
+            'DESCRIPTION',
+            'FILE SELECTION',
+            'DIRECTORY SELECTION',
+            'OPTIONS',
+            'THE .ackrc FILE',
+            'Defining your own types',
+            'ENVIRONMENT VARIABLES',
+            'AVAILABLE COLORS',
+            'ACK & OTHER TOOLS',
+            'DEBUGGING ACK PROBLEMS',
+            'ACKRC LOCATION SEMANTICS',
+            'BUGS & ENHANCEMENTS',
+            'SUPPORT',
+            'COMMUNITY',
+            'ACKNOWLEDGEMENTS',
+            'AUTHOR',
+            'COPYRIGHT & LICENSE',
+        ],
+    );
+
     if ( $App::Ack::STANDALONE ) {
+        my $sections = $sections{ $manual } // App::Ack::die "No such manual $manual";
+
         # Right now we just show all POD for the standalone.
         Pod::Usage::pod2usage({
             -input     => $App::Ack::ORIGINAL_PROGRAM_NAME,
             -verbose   => 2,
+            -noperldoc => 1,
             -exitval   => 0,
+            -sections  => $sections,
         });
     }
     else {
-        my $module = "App::Ack::Docs::$section";
+        my $module = "App::Ack::Docs::$manual";
         eval "require $module" or App::Ack::die( "Can't load $module" );
 
         Pod::Usage::pod2usage({
-            -input     => $INC{ "App/Ack/Docs/$section.pm" },
+            -input     => $INC{ "App/Ack/Docs/$manual.pm" },
             -verbose   => 2,
             -exitval   => 0,
         });

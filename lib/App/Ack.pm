@@ -475,13 +475,13 @@ sub show_docs {
         # Right now we just show all POD for the standalone.
         Pod::Usage::pod2usage({
             -input     => $App::Ack::ORIGINAL_PROGRAM_NAME,
-            -verbose   => 2,
-            -noperldoc => 1,
-            -exitval   => 0,
+            -verbose   => 99,   # -sections requires 99
             -sections  => $sections,
+            -exitval   => 0,
         });
     }
     else {
+        # Load the module and then check %INC for where it was loaded from.
         my $module = "App::Ack::Docs::$manual";
         eval "require $module" or App::Ack::die( "Can't load $module" );
 

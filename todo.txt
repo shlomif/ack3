@@ -10,6 +10,3 @@ t/ack-u.t                  (Wstat: 768 Tests: 4 Failed: 3)
 t/ack-underline.t          (Wstat: 1024 Tests: 4 Failed: 4)
   Failed tests:  1-4
   Non-zero exit status: 4
-t/ack-w.t                  (Wstat: 1792 Tests: 15 Failed: 7)
-  Failed tests:  8-13, 15
-  Non-zero exit status: 7

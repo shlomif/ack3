@@ -55,8 +55,8 @@ sub do_parent {
 
 prep_environment();
 
-my $ozy__ = File::Next::reslash( 't/text/ozymandias.txt' );
-my $raven = File::Next::reslash( 't/text/raven.txt' );
+my $ozy__ = reslash( 't/text/ozymandias.txt' );
+my $raven = reslash( 't/text/raven.txt' );
 
 my @expected = line_split( <<"EOF" );
 $ozy__:6:Tell that its sculptor well those passions read

@@ -45,9 +45,7 @@ subtest '-m with -L' => sub {
     my @files    = reslash( 't/text' );
     my @args     = ( '-m', 3, '-l', '--sort-files', 'the' );
     my @results  = run_ack( @args, @files );
-    my @expected = map { File::Next::reslash( "t/text/$_" ) } (
-        'amontillado.txt', 'bill-of-rights.txt', 'constitution.txt'
-    );
+    my @expected = map { reslash( "t/text/$_" ) } qw( amontillado.txt bill-of-rights.txt constitution.txt );
 
     is_deeply(\@results, \@expected);
 };

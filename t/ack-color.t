@@ -8,7 +8,7 @@ use Test::More;
 use lib 't';
 use Util;
 
-plan tests => 16;
+plan tests => 15;
 
 prep_environment();
 
@@ -66,7 +66,7 @@ ADJACENT_CAPTURE_COLORING: {
 
     is( @results, 1, 'backref pattern matches once' );
     # The double end + start is kinda weird; this test could probably be more robust.
-    is( $results[0], "Whether ${match_start}Temp${match_end}${match_start}ter${match_end} sent, or whether tempest tossed thee here ashore,", 'adjacent capture groups should highlight correctly');
+    is( $results[0], "Whether ${match_start}Tempter${match_end} sent, or whether tempest tossed thee here ashore,$line_end", 'adjacent capture groups should highlight correctly');
 }
 
 
@@ -74,16 +74,16 @@ subtest 'Heading colors, single line' => sub {
     plan tests => 6;
 
     # Without the column number
-    my $file = reslash( 't/text/science-of-myth.txt' );
-    my @args = qw( mutually -w --color -H );
+    my $file = reslash( 't/text/ozymandias.txt' );
+    my @args = qw( mighty -i -w --color -H );
     my @results = run_ack( @args, $file );
 
-    is( $results[0], "${green_start}$file${green_end}:${yellow_start}13${yellow_end}:Science and religion are not ${match_start}mutually${match_end} exclusive$line_end", 'Properly row highlights' );
+    is( $results[0], "${green_start}$file${green_end}:${yellow_start}11${yellow_end}:Look on my works, ye ${match_start}Mighty${match_end}, and despair!'$line_end", 'Match line OK' );
     is( scalar @results, 1, 'Only one line back' );
 
     # With column number
     @results = run_ack( @args, '--column', $file );
-    is( $results[0], "${green_start}$file${green_end}:${yellow_start}13${yellow_end}:${yellow_start}30${yellow_end}:Science and religion are not ${match_start}mutually${match_end} exclusive$line_end", 'Properly row highlights' );
+    is( $results[0], "${green_start}$file${green_end}:${yellow_start}11${yellow_end}:${yellow_start}22${yellow_end}:Look on my works, ye ${match_start}Mighty${match_end}, and despair!'$line_end", 'Match line OK' );
     is( scalar @results, 1, 'Only one line back' );
 };
 
@@ -92,18 +92,18 @@ subtest 'Heading colors, grouped' => sub {
     plan tests => 8;
 
     # Without the column number
-    my $file = reslash( 't/text/science-of-myth.txt' );
-    my @args = qw( mutually -w --color --group );
+    my $file = reslash( 't/text/ozymandias.txt' );
+    my @args = qw( mighty -i -w --color --group );
     my @results = run_ack( @args, 't/text' );
 
     is( $results[0], "${green_start}$file${green_end}", 'Heading is right' );
-    is( $results[1], "${yellow_start}13${yellow_end}:Science and religion are not ${match_start}mutually${match_end} exclusive$line_end", 'Match line OK' );
+    is( $results[1], "${yellow_start}11${yellow_end}:Look on my works, ye ${match_start}Mighty${match_end}, and despair!'$line_end", 'Match line OK' );
     is( scalar @results, 2, 'Exactly two lines' );
 
     # With column number
     @results = run_ack( @args, '--column', 't/text' );
     is( $results[0], "${green_start}$file${green_end}", 'Heading is right' );
-    is( $results[1], "${yellow_start}13${yellow_end}:${yellow_start}30${yellow_end}:Science and religion are not ${match_start}mutually${match_end} exclusive$line_end", 'Match line OK' );
+    is( $results[1], "${yellow_start}11${yellow_end}:${yellow_start}22${yellow_end}:Look on my works, ye ${match_start}Mighty${match_end}, and despair!'$line_end", 'Match line OK' );
     is( scalar @results, 2, 'Exactly two lines' );
 };
 

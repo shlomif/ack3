@@ -1115,8 +1115,6 @@ sub count_matches_in_file {
     return $nmatches;
 }
 
-__END__
-
 =pod
 
 =encoding UTF-8
